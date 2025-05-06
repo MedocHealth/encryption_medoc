@@ -1,0 +1,42 @@
+{
+  "name": "encryption_medoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "conf",
+    "bin",
+    "package.json",
+    "tsconfig.json"
+  ],
+"scripts": {
+    "build": "tsc",
+    "prepare": "npm run build && npm run obfuscate",
+    "obfuscate": "javascript-obfuscator dist --output dist-obfuscated",
+  "start": "node dist-obfuscated/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@azure/identity": "^4.8.0",
+    "@azure/keyvault-keys": "^4.9.0",
+    "@azure/keyvault-secrets": "^4.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "mongodb-client-encryption": "^6.3.0",
+    "tmp": "^0.2.3",
+    "uuid": "^11.1.0",
+    "zod": "git+https://github.com/colinhacks/zod.git#v3.24.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/tmp": "^0.2.6",
+    "husky": "^8.0.0",
+  "javascript-obfuscator": "^3.x.x",
+  }
+}

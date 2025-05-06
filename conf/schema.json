@@ -1,0 +1,12 @@
+{
+    "collection1": {
+        "f1": "string"
+    },
+    "collection2": {
+        "f1": "string",
+        "f2": "number"
+    },
+    "coll3": {
+        "f1": "bool"
+    }
+}
