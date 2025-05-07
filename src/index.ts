@@ -3,3 +3,4 @@ export * from './constants/constants';
 //export * from './kms';
 export * from './encryption';
 export * from './devtrials';
+export * from './collections';

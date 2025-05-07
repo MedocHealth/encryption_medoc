@@ -1,7 +1,8 @@
 import { MongoClient, ClientEncryption, KMSProviders } from 'mongodb';
 import { Application } from 'express';
 import { f } from './devtrials';
-
+import * as dotenv from 'dotenv';
+dotenv.config();//configDotenv();
 export let client: MongoClient;
 
 export class EncryptedMongoClient {
@@ -28,13 +29,19 @@ export class EncryptedMongoClient {
         // Default connection string if none is provided
         const connectionString = url ?? 'mongodb+srv://<user>:<pass>@<cluster>.mongodb.net';
 
+        const AZURE_TENANT_ID = "24b073b9-1bae-4f93-8e33-f91c076f7e61"
+        const AZURE_CLIENT_ID = "024fc775-79ea-4091-88c5-5401a8000ea2"
+        const AZURE_CLIENT_SECRET = "QsI8Q~2i7GVKqLdvusJBYIaWJ9ZUtz6QYlmsDbot"
+        const AZURE_KEY_NAME = "medoc-key"
+        const AZURE_KEY_VERSION = "feacb7e500ad466b98539f60ce490355"
+        const AZURE_KEY_VAULT_ENDPOINT = "https://medoc-key-vault.vault.azure.net/"
         // Azure KMS Configuration (should be secured and configured)
         const azureKMS = {
-            tenantId: '<your-azure-tenant-id>',
-            clientId: '<your-azure-client-id>',
-            clientSecret: '<your-azure-client-secret>',
-            keyName: '<your-key-name>',
-            keyVaultEndpoint: '<your-key-vault-name>.vault.azure.net',
+            tenantId: AZURE_TENANT_ID,
+            clientId: AZURE_CLIENT_ID,
+            clientSecret: AZURE_CLIENT_SECRET,
+            keyName: AZURE_KEY_NAME,
+            keyVaultEndpoint: AZURE_KEY_VAULT_ENDPOINT,
         };
 
         // KMS Providers Configuration for Azure
@@ -126,6 +133,7 @@ export class EncryptedMongoClient {
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid'; // for generating key UUIDs (mock)
 import * as p from 'path';
+import { configDotenv } from 'dotenv';
 
 // Replace with your actual keyId from your key vault
 const defaultKeyId = {

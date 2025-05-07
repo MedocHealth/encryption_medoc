@@ -1,12 +1,353 @@
-{
-    "collection1": {
-        "f1": "string"
+[
+    {
+        "DoctorList": {
+            "hospitalId": "String",
+            "doctorName": "String",
+            "doctorUsername": "String",
+            "email": "String",
+            "password": "String",
+            "phoneNumber": "String",
+            "mode": "String",
+            "specialization": "String",
+            "profileUrl": "String",
+            "address": "String",
+            "listOfHospitals": [
+                "String"
+            ],
+            "department": "String"
+        }
     },
-    "collection2": {
-        "f1": "string",
-        "f2": "number"
+    {
+        "Employee": {
+            "hospitalId": "String",
+            "ContactDetails.name": "String",
+            "ContactDetails.email": "String",
+            "ContactDetails.phoneNumber": "String",
+            "ContactDetails.address": "String",
+            "ContactDetails.dateOfBirth": "String",
+            "ContactDetails.gender": "String",
+            "ContactDetails.employeeId": "String",
+            "hr.joining_date": "string",
+            "hr.total_payable_salary": "number",
+            "hr.total_paid_salary": "number",
+            "hr.leaving_date": "number",
+            "hr.salary": "number",
+            "hr.role.role": "string",
+            "hr.role.customName": "string",
+            "hr.department": "string",
+            "hr.supervisor": "string",
+            "hr.no_of_leaves": "string",
+            "hr.no_of_absent": "string",
+            "hr.attend": "string",
+            "hr.attendance": [],
+            "hr.performance_remarks": [],
+            "hr.history_payroll": [],
+            "hr.shift": [],
+            "hr.actual_working_hours": "number",
+            "hr.extra_working_hours": "number",
+            "hr.dutyRoster": [],
+            "hr.allLeaves": [],
+            "hr.roleAccess": []
+        }
     },
-    "coll3": {
-        "f1": "bool"
+    {
+        "PatientList": {
+            "hospitalId": "String",
+            "officeId": "String",
+            "patientId": "String",
+            "username": "String",
+            "email": "String",
+            "name": "String",
+            "age": "Number",
+            "gender": "String",
+            "password": "String",
+            "bloodGroup": "String",
+            "address": "String",
+            "pincode": "String",
+            "phoneNumber": "String",
+            "secondaryPhoneNumber": "String",
+            "dob": "String",
+            "group": "String",
+            "flag": "String",
+            "familyHistory": "String",
+            "parentsDetails.motherHeight": "Number",
+            "parentsDetails.motherName": "String",
+            "parentsDetails.motherProfession": "String",
+            "parentsDetails.fatherHeight": "Number",
+            "parentsDetails.fatherName": "String",
+            "parentsDetails.fatherProfession": "String",
+            "allergies": "String",
+            "additionalNotes": "String",
+            "preTermDays": "Number",
+            "referredBy": "String",
+            "school": "String",
+            "family": [],
+            "vitals": [],
+            "listOfHospitals": [],
+            "listOfDoctors": [],
+            "profileUrl": "String",
+            "personalHealth.ovulationCycle": [],
+            "patientVaccination": [],
+            "patientGrowth": []
+        }
+    },
+    {
+        "Hospitals": {
+            "hospitalId": "String",
+            "hospitalType": "String",
+            "name": "String",
+            "phoneNumber": "String",
+            "email": "String",
+            "address": "String",
+            "password.password": "String",
+            "password.expiresAt": "String",
+            "listOfDoctors": [],
+            "ambulance": [],
+            "labs": [],
+            "room": [],
+            "depts": [],
+            "passkeys": [],
+            "roleAccess": "Object",
+            "ratePerBill.ratePerOpdBill": "Number",
+            "ratePerBill.ratePerIpdBill": "Number",
+            "ratePerBill.ratePerTestBill": "Number",
+            "wallet": "Number",
+            "location.latitude": "Number",
+            "location.longitude": "Number",
+            "location.accuracy": "Number",
+            "loginDistance": "Number",
+            "Images.hospitalLogo": "String",
+            "Images.headerImage": "String",
+            "Images.footerImage": "String",
+            "colors.primaryColor": "String",
+            "colors.secondaryColor": "String",
+            "colors.accentColor": "String",
+            "colors.backgroundColor": "String"
+        }
+    },
+    {
+        "Chats": {
+            "hospitalId": "String",
+            "message": "String",
+            "sender": "String",
+            "receiver": "String",
+            "timestamp": "String"
+        }
+    },
+    {
+        "Emergency": {
+            "hospitalId": "String",
+            "empId": "String",
+            "emergencyId": "String",
+            "emergencyType": "String",
+            "emergencyLocation": "String",
+            "emergencyTime": "String",
+            "driver": "Object",
+            "vehicleNumber": "String",
+            "vehicleLocation": "String",
+            "available": "Boolean",
+            "patient": "Object",
+            "isCompleted": "Boolean",
+            "completedTime": "String",
+            "assigneeId": "String"
+        }
+    },
+    {
+        "Alerts": {
+            "hospitalId": "String",
+            "doctorUsername": "String",
+            "message": "String",
+            "status": "String",
+            "date": "String",
+            "createdBy": "String"
+        }
+    },
+    {
+        "Finance": {
+            "hospitalId": "String",
+            "amountPending": "Number",
+            "outgoingAmount": "Number",
+            "income": "Number"
+        }
+    },
+    {
+        "Expenses": {
+            "hospitalId": "String",
+            "type": "String",
+            "name": "String",
+            "description": "String",
+            "amount": "Number",
+            "status": "String"
+        }
+    },
+    {
+        "defaultForms": {
+            "formName": "String",
+            "formType": "String",
+            "formId": "String",
+            "hospitalId": "String",
+            "formDescription": "String",
+            "sections": []
+        }
+    },
+    {
+        "Item": {
+            "hospitalId": "String",
+            "vendorName": "String",
+            "vendorId": "String",
+            "itemType": "String",
+            "name": "String",
+            "expiry": "String",
+            "batchNo": "String",
+            "hsnNo": "String",
+            "packing": "String",
+            "subType": "String",
+            "quantity": "Number",
+            "price": "Number",
+            "imagePath": "String"
+        }
+    },
+    {
+        "Invoices": {
+            "trnId": "String",
+            "hospitalId": "String",
+            "customerUsername": "String",
+            "customerName": "String",
+            "type": "String",
+            "date_time": "String",
+            "totalAmount": "Number",
+            "packaging": "String",
+            "freight": "Number",
+            "taxable_amount": "Number",
+            "tax_collected_at_source": "Number",
+            "round_off": "Number",
+            "grand_total": "Number",
+            "method_of_payment": "String",
+            "contents": [],
+            "placeHolder": "Boolean",
+            "paymentStatus": "String",
+            "inventoryId": "String"
+        }
+    },
+    {
+        "IpdBills": {
+            "hospitalId": "String",
+            "billId": "String",
+            "billingDate_time": "String",
+            "billing.roomCharges.type": "String",
+            "billing.roomCharges.dailyRate": "Number",
+            "billing.roomCharges.days": "Number",
+            "billing.consultationCharges.visits": "Number",
+            "billing.consultationCharges.ratePerVisit": "Number",
+            "billing.services": [],
+            "billing.medicines": [],
+            "billing.procedures": [],
+            "billing.taxes.gst": "Number",
+            "billing.taxes.otherTaxes": "Number",
+            "billing.paymentMethod": "String",
+            "billing.insuranceCoverage.provider": "String",
+            "billing.insuranceCoverage.policyNumber": "String",
+            "billing.insuranceCoverage.coverageAmount": "String",
+            "billing.paymentStatus": "String",
+            "finalAmount": "Number",
+            "ipdId": "String"
+        }
+    },
+    {
+        "IPDList": {
+            "hospitalId": "String",
+            "id": "String",
+            "patient.name": "String",
+            "patient.username": "String",
+            "patient.DOS": [],
+            "patient.DIO": [],
+            "patient.nonDrugOrder": [],
+            "admissionDate": "String",
+            "dischargeDate": "String",
+            "room.type": "String",
+            "room.roomNumber": "Number",
+            "room.Beds.number": "Number",
+            "room.Beds.id": "String",
+            "room.numberOfBeds": "Number",
+            "isbedOccupied": "Boolean",
+            "diagnosis": [],
+            "medications": [],
+            "procedures": [],
+            "diet": "String",
+            "allergies": [],
+            "visitHistory": [],
+            "insurance.id": "String",
+            "insurance.provider": "String",
+            "attendingPhysician.id": "String",
+            "attendingPhysician.name": "String",
+            "nurse.id": "String",
+            "nurse.name": "String",
+            "familyContact.name": "String",
+            "familyContact.relation": "String",
+            "familyContact.phoneNumber": "String",
+            "notes": "String",
+            "equipment.equipmentId": "String",
+            "equipment.equipmentName": "String",
+            "equipment.quantity": "Number",
+            "equipment.status": "String",
+            "EMAR.empId": "String",
+            "EMAR.empName": "String",
+            "EMAR.createdAt": "String",
+            "EMAR.updatedAt": "String",
+            "EMAR.actions": "String"
+        }
+    },
+    {
+        "Surgeries": {
+            "hospitalId": "String",
+            "time": "String",
+            "patientRoom": "String",
+            "procedure": "String",
+            "remarks": "String",
+            "surgeon": "String",
+            "nurse_team": [],
+            "anaesthesiologist": "String",
+            "anaesthesiaType": "String",
+            "scrub": "String",
+            "circulatory": "String",
+            "pateintUsername": "String",
+            "patientName": "String",
+            "date": "String",
+            "hospitalName": "String",
+            "type": "String",
+            "prescipDoctor": "String",
+            "performingDoc": "String",
+            "doctorUsername": "String",
+            "note": "String",
+            "contents": "String",
+            "file_path": "String",
+            "uploaded_by": "String",
+            "uploaded_At": "String",
+            "downloaded_by": "String",
+            "downloaded_at": "String",
+            "status": "String",
+            "equipment": [],
+            "anaesthesiaName": [],
+            "iv": [],
+            "bloodUnit": "String",
+            "room.type": "String",
+            "room.roomNumber": "Number",
+            "room.Beds.number": "Number",
+            "room.Beds.id": "String",
+            "room.numberOfBeds": "Number",
+            "medicine": []
+        }
+    },
+    {
+        "TaskList": {
+            "hospitalId": "String",
+            "creatorId": "String",
+            "assignedToId": "String",
+            "title": "String",
+            "description": "String",
+            "status": "String",
+            "priority": "String",
+            "keyId": "String"
+        }
     }
-}
+]
