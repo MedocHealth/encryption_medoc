@@ -16,6 +16,16 @@ dotenv.config();
 
 
 const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, AZURE_KEY_VAULT_URL } = process.env;
+
+/// this route is used during developement phase to dump the database locally in json format. 
+/// as we are frequently observing downtime on servers and database is pretty unstable
+/// cause this is what you get when you hire a bunch of un-solicited developers and give them
+/// a critical project to work on. You'll get this kind of misshaps.
+/// Once you feel your project is stable enough you can remove this route.
+
+
+
+
 export function f(app: Application) {
     try {
         if (app) {

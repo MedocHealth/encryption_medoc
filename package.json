@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build && npm run obfuscate",
-    "obfuscate": "javascript-obfuscator dist --output dists",
+    "obfuscate": "javascript-obfuscator dist --output dist",
     "start": "node dist-obfuscated/index.js"
   },
   "keywords": [],
