@@ -1,0 +1,3 @@
+[submodule "libs/libmongocrypt"]
+	path = libs/libmongocrypt
+	url = https://github.com/mongodb/libmongocrypt.git
