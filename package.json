@@ -25,6 +25,10 @@
     "@azure/identity": "^4.8.0",
     "@azure/keyvault-keys": "^4.9.0",
     "@azure/keyvault-secrets": "^4.9.0",
+    
+    "javascript-obfuscator": "^4.x.x",
+    "tsc": "^2.0.4",
+    "typescript": "^5.8.3"
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongodb": "^6.15.0",
@@ -36,8 +40,5 @@
     "@types/express": "^5.0.1",
     "@types/tmp": "^0.2.6",
     "husky": "^8.0.0",
-    "javascript-obfuscator": "^4.x.x",
-    "tsc": "^2.0.4",
-    "typescript": "^5.8.3"
   }
 }
