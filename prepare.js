@@ -28,18 +28,35 @@ function checkExists(cmd) {
   }
 }
 
+function getUbuntuCodename() {
+  try {
+    const content = fs.readFileSync("/etc/lsb-release", "utf-8");
+    const match = content.match(/^DISTRIB_CODENAME=(.*)$/m);
+    if (match) {
+      return match[1];
+    } else {
+      console.error("❌ Could not find DISTRIB_CODENAME in /etc/lsb-release");
+      process.exit(1);
+    }
+  } catch (err) {
+    console.error("❌ Failed to read /etc/lsb-release");
+    console.error(err.message);
+    process.exit(1);
+  }
+}
+
 function installLinux() {
   console.log("📦 Installing mongocryptd on Linux (Ubuntu/Debian)");
 
-  const codename = execSync("lsb_release -c -s").toString().trim();
+  const codename = getUbuntuCodename();
 
-  run("wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | sudo apt-key add -");
+  run(" curl -fsSL https://pgp.mongodb.com/server-7.0.asc |    sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg    --dearmor");
 
   run(
-    `echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu ${codename}/mongodb-enterprise/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-enterprise.list`
+    `echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.com/apt/ubuntu ${codename}/mongodb-enterprise/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-enterprise-7.0.list`
   );
 
-  run("sudo apt update");
+  run("sudo apt update -y");
   run("sudo apt install -y mongodb-enterprise mongodb-enterprise-cryptd");
 }
 
