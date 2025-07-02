@@ -1,0 +1,9 @@
+export declare const AZURE_TENANT_ID = "24b073b9-1bae-4f93-8e33-f91c076f7e61";
+export declare const AZURE_CLIENT_ID = "024fc775-79ea-4091-88c5-5401a8000ea2";
+export declare const AZURE_CLIENT_SECRET = "QsI8Q~2i7GVKqLdvusJBYIaWJ9ZUtz6QYlmsDbot";
+export declare const AZURE_KEY_NAME = "medoc-key";
+export declare const AZURE_KEY_VERSION = "feacb7e500ad466b98539f60ce490355";
+export declare const AZURE_KEY_VAULT_ENDPOINT = "https://medoc-key-vault.vault.azure.net/";
+export declare const KEYVALUT_DB = "MedocKeyVault";
+export declare const KEYVALUT_COLLECTION = "__keyvault";
+export declare const KEY_VAULT_NAMESPACE = "MedocKeyVault.__keyvault";

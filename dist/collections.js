@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MedocCollections = void 0;
+var MedocCollections;
+(function (MedocCollections) {
+    MedocCollections["ALERTS"] = "Alerts";
+    MedocCollections["CHATS"] = "Chats";
+    MedocCollections["DEFAULTFORMS"] = "defaultForms";
+    MedocCollections["DOCTORLIST"] = "DoctorList";
+    MedocCollections["EMERGENCY"] = "Emergency";
+    MedocCollections["EMPLOYEE"] = "Employee";
+    MedocCollections["EXPENSES"] = "Expenses";
+    MedocCollections["FINANCE"] = "Finance";
+    MedocCollections["HOSPITALS"] = "Hospitals";
+    MedocCollections["INVOICES"] = "Invoices";
+    MedocCollections["IPDBILLS"] = "IpdBills";
+    MedocCollections["IPDLIST"] = "IPDList";
+    MedocCollections["ITEM"] = "Item";
+    MedocCollections["PATIENTLIST"] = "PatientList";
+    MedocCollections["SURGERIES"] = "Surgeries";
+    MedocCollections["TASKLIST"] = "TaskList";
+    MedocCollections["USERS"] = "Users";
+})(MedocCollections || (exports.MedocCollections = MedocCollections = {}));

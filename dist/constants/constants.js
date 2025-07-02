@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.KEY_VAULT_NAMESPACE = exports.KEYVALUT_COLLECTION = exports.KEYVALUT_DB = exports.AZURE_KEY_VAULT_ENDPOINT = exports.AZURE_KEY_VERSION = exports.AZURE_KEY_NAME = exports.AZURE_CLIENT_SECRET = exports.AZURE_CLIENT_ID = exports.AZURE_TENANT_ID = void 0;
+exports.AZURE_TENANT_ID = "24b073b9-1bae-4f93-8e33-f91c076f7e61";
+exports.AZURE_CLIENT_ID = "024fc775-79ea-4091-88c5-5401a8000ea2";
+exports.AZURE_CLIENT_SECRET = "QsI8Q~2i7GVKqLdvusJBYIaWJ9ZUtz6QYlmsDbot";
+exports.AZURE_KEY_NAME = "medoc-key";
+exports.AZURE_KEY_VERSION = "feacb7e500ad466b98539f60ce490355";
+exports.AZURE_KEY_VAULT_ENDPOINT = "https://medoc-key-vault.vault.azure.net/";
+exports.KEYVALUT_DB = 'MedocKeyVault';
+exports.KEYVALUT_COLLECTION = '__keyvault';
+exports.KEY_VAULT_NAMESPACE = `${exports.KEYVALUT_DB}.${exports.KEYVALUT_COLLECTION}`;

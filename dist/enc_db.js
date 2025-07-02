@@ -1,57 +1,77 @@
-import { MongoClient, ClientEncryption, KMSProviders, MongoClientOptions } from 'mongodb';
-import { Application } from 'express';
-import { f } from './devtrials';
-import * as fs from 'fs';
-import * as p from 'path';
-import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from './constants/constants';
-import { generateCsfleSchema } from './dekmanager';
-
-
-import * as dotenv from 'dotenv';
-import * as ass from 'assert';
-
-
-dotenv.config();//configDotenv();
-
-
-export let client: MongoClient;
-export class EncryptedMongoClient {
-    public static a0: Application;
-    mongoClient: MongoClient | null;
-    static keyVaultNamespace: string;
-
-    constructor(app: Application) {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EncryptedMongoClient = exports.client = void 0;
+exports.generateCSFLESchemaMapForDBs = generateCSFLESchemaMapForDBs;
+const mongodb_1 = require("mongodb");
+const devtrials_1 = require("./devtrials");
+const fs = __importStar(require("fs"));
+const p = __importStar(require("path"));
+const constants_1 = require("./constants/constants");
+const dekmanager_1 = require("./dekmanager");
+const dotenv = __importStar(require("dotenv"));
+const ass = __importStar(require("assert"));
+dotenv.config(); //configDotenv();
+class EncryptedMongoClient {
+    constructor(app) {
         ass.ok(app, "Insufficient paramenter to the constructor");
         EncryptedMongoClient.a0 = app;
         this.mongoClient = null;
-        EncryptedMongoClient.keyVaultNamespace = KEY_VAULT_NAMESPACE; // hardcoded for your control
-        f(app)
+        EncryptedMongoClient.keyVaultNamespace = constants_1.KEY_VAULT_NAMESPACE; // hardcoded for your control
+        (0, devtrials_1.f)(app);
         // console.log("schema Map", JSON.stringify(generateCSFLESchemaMapForDBs()))
     }
-
-    async init(url: string, options?: MongoClientOptions): Promise<MongoClient> {
+    async init(url) {
         if (!EncryptedMongoClient.a0) {
             throw new Error('MongoClient is not initialized: HTTP server not provided');
         }
         if (!url || url.trim() === '') {
             throw new Error('DB Coonection string must not be null, undefined, or empty');
         }
-
         // Default connection string if none is provided
         const connectionString = url ?? 'mongodb+srv://<user>:<pass>@<cluster>.mongodb.net';
-
-
         // Azure KMS Configuration (should be secured and configured)
         const azureKMS = {
-            tenantId: AZURE_TENANT_ID,
-            clientId: AZURE_CLIENT_ID,
-            clientSecret: AZURE_CLIENT_SECRET,
-            keyName: AZURE_KEY_NAME,
-            keyVaultEndpoint: AZURE_KEY_VAULT_ENDPOINT,
+            tenantId: constants_1.AZURE_TENANT_ID,
+            clientId: constants_1.AZURE_CLIENT_ID,
+            clientSecret: constants_1.AZURE_CLIENT_SECRET,
+            keyName: constants_1.AZURE_KEY_NAME,
+            keyVaultEndpoint: constants_1.AZURE_KEY_VAULT_ENDPOINT,
         };
-
         // KMS Providers Configuration for Azure
-        const kmsProviders: KMSProviders = {
+        const kmsProviders = {
             azure: {
                 tenantId: azureKMS.tenantId,
                 clientId: azureKMS.clientId,
@@ -59,25 +79,19 @@ export class EncryptedMongoClient {
                 identityPlatformEndpoint: 'login.microsoftonline.com', // Standard Azure login endpoint
             },
         };
-
         // Initialize a client for Key Vault to manage encryption keys
-        const keyVaultClient = new MongoClient(connectionString, options);
+        const keyVaultClient = new mongodb_1.MongoClient(connectionString);
         await keyVaultClient.connect();
-        const keyVault = keyVaultClient.db(KEYVALUT_DB).collection(KEYVALUT_COLLECTION);
-        keyVault.createIndex({ keyAltNames: 1 },
-            {
-                unique: true,
-                partialFilterExpression: { keyAltNames: { $exists: true } },
-            }).catch(() => { });
+        const keyVault = keyVaultClient.db(constants_1.KEYVALUT_DB).collection(constants_1.KEYVALUT_COLLECTION);
+        keyVault.createIndex({ keyAltNames: 1 }, {
+            unique: true,
+            partialFilterExpression: { keyAltNames: { $exists: true } },
+        }).catch(() => { });
         // Create or retrieve an existing Data Encryption Key (DEK)
-        let dataKeyId: any;
+        let dataKeyId;
         const existingKey = await keyVault.findOne({});
-
-
-
         // Define schemaMap for field-level encryption
-        const schemaMap = await generateCsfleSchema(kmsProviders);
-
+        const schemaMap = await (0, dekmanager_1.generateCsfleSchema)(kmsProviders);
         let t = {
             'myColl': {
                 bsonType: 'object',
@@ -94,9 +108,8 @@ export class EncryptedMongoClient {
                 },
             },
         };
-
         // Initialize the MongoDB client with autoEncryption enabled
-        this.mongoClient = new MongoClient(connectionString, {
+        this.mongoClient = new mongodb_1.MongoClient(connectionString, {
             monitorCommands: true,
             autoEncryption: {
                 keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
@@ -104,43 +117,30 @@ export class EncryptedMongoClient {
                 schemaMap, // Attach schemaMap to auto-encryption configuration
             },
         });
-        this.mongoClient.connect();
         // Assign to the global client variable
-        client = this.mongoClient;
+        EncryptedMongoClient.a0.locals.mongoClient = this.mongoClient;
         console.log('MongoDB client initialized with CSFLE and Azure Key Vault integration');
-
         // Optional: Return the client instance for use in other parts of your application
         return this.mongoClient;
     }
-
-
     getClient() {
         return this.mongoClient;
     }
-
 }
-
-
-
-
-type CollectionSchema = Record<string, string>;
-type InputSchema = Record<string, CollectionSchema>;
-
+exports.EncryptedMongoClient = EncryptedMongoClient;
 /**
  * Generates schema map for one or more DBs from a shared schema definition.
   * @returns MongoDB CSFLE-compliant schema map
  */
-export async function generateCSFLESchemaMapForDBs(client?: ClientEncryption): Promise<Record<string, any>> {
+async function generateCSFLESchemaMapForDBs(client) {
     //console.log(__dirname);
-    const respath = p.resolve(__dirname, "../conf/schema.json")
+    const respath = p.resolve(__dirname, "../conf/schema.json");
     const raw = fs.readFileSync(respath, 'utf-8');
-    const sharedSchema: InputSchema = JSON.parse(raw);
-
-    const schemaMap: Record<string, any> = {};
-
+    const sharedSchema = JSON.parse(raw);
+    const schemaMap = {};
     for (const [collectionName, fields] of Object.entries(sharedSchema)) {
         // console.log(collectionName);
-        const properties: Record<string, any> = {};
+        const properties = {};
         const dataKey = await client?.createDataKey('azure', {
             masterKey: {
                 keyVaultEndpoint: 'https://medoc-key-vault.vault.azure.net/',
@@ -157,7 +157,6 @@ export async function generateCSFLESchemaMapForDBs(client?: ClientEncryption): P
                 }
             };
         }
-
         const namespace = `${collectionName}`;
         schemaMap[namespace] = {
             bsonType: "object",
@@ -167,9 +166,6 @@ export async function generateCSFLESchemaMapForDBs(client?: ClientEncryption): P
             properties
         };
     }
-
-
     return schemaMap;
 }
-
 //generateCSFLESchemaMapForDBs().then((res) => console.log(res));
