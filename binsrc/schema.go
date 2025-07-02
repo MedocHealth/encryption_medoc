@@ -12,15 +12,15 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-const AZURE_TENANT_ID = "24b073b9-1bae-4f93-8e33-f91c076f7e61"
-const AZURE_CLIENT_ID = "024fc775-79ea-4091-88c5-5401a8000ea2"
-const AZURE_CLIENT_SECRET = "QsI8Q~2i7GVKqLdvusJBYIaWJ9ZUtz6QYlmsDbot"
-const AZURE_KEY_NAME = "medoc-key"
-const AZURE_KEY_VERSION = "feacb7e500ad466b98539f60ce490355"
-const AZURE_KEY_VAULT_ENDPOINT = "https://medoc-key-vault.vault.azure.net/"
-const KEYVALUT_DB = "MedocKeyVault"
-const KEYVALUT_COLLECTION = "__keyvault"
-const PROVIDER = "azure"
+// const AZURE_TENANT_ID = "24b073b9-1bae-4f93-8e33-f91c076f7e61"
+// const AZURE_CLIENT_ID = "024fc775-79ea-4091-88c5-5401a8000ea2"
+// const AZURE_CLIENT_SECRET = "QsI8Q~2i7GVKqLdvusJBYIaWJ9ZUtz6QYlmsDbot"
+// const AZURE_KEY_NAME = "medoc-key"
+// const AZURE_KEY_VERSION = "feacb7e500ad466b98539f60ce490355"
+// const AZURE_KEY_VAULT_ENDPOINT = "https://medoc-key-vault.vault.azure.net/"
+// const KEYVALUT_DB = "MedocKeyVault"
+// const KEYVALUT_COLLECTION = "__keyvault"
+// const PROVIDER = "azure"
 
 var KEY_VAULT_NAMESPACE string = KEYVALUT_DB + "." + KEYVALUT_COLLECTION
 
