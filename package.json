@@ -28,9 +28,6 @@
     "@azure/keyvault-secrets": "^4.9.0",
     "archiver": "^7.0.1",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "mongodb": "^6.15.0",
-    "mongodb-client-encryption": "^6.4.0",
     "tmp": "^0.2.3",
     "uuid": "^11.1.0"
   },
