@@ -2,9 +2,9 @@
 import fs from 'fs';
 import * as p from "path";
 import { ClientEncryption, KMSProviders, MongoClient } from "mongodb";
-import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from "./constants/constants";
-import { EncryptedMongoClient } from './enc_db';
-import * as uuid from 'uuid';
+import { AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from "./constants/constants";
+
+
 export async function ensureDekForField(client: MongoClient, kmsProviders: KMSProviders, fieldKeyAltName: string): Promise<String | undefined> {
     //return uuid.v4();
     await client.connect();
@@ -58,7 +58,7 @@ const host = encodeURIComponent("dbhospital.kfabsde.mongodb.net")
 const options = "retryWrites=true&w=majority&appName=DBHospital"
 export const MONGO_URI = process.env.Node_env === "Prod" ? process.env.Prod_MongoURL as string : `mongodb+srv://${username}:${password}@${host}/?${options}`;
 
-async function generateCsfleSchema(kmsProviders: KMSProviders) {
+export async function generateCsfleSchema(kmsProviders: KMSProviders) {
     const p0 = p.join(__dirname, "../conf/schema.json");
     const jsonArray: CollectionSchema[] = JSON.parse(fs.readFileSync(p0, 'utf-8'));
     const schemaMap: Record<string, JsonSchema> = {};
@@ -67,9 +67,8 @@ async function generateCsfleSchema(kmsProviders: KMSProviders) {
     await createIndexesOnKeyVault(client);
 
     for (const collectionDef of jsonArray) {
-        console.log(collectionDef);
-        const [collectionName] = Object.keys(collectionDef);
-        const fields = collectionDef[collectionName];
+        const [collectionNam] = Object.keys(collectionDef);
+        const fields = collectionDef[collectionNam];
 
         //  const properties: Record<string, any> = {};
         for (const collectionDef of jsonArray) {
@@ -107,7 +106,7 @@ async function generateCsfleSchema(kmsProviders: KMSProviders) {
                 // console.log(fieldName, properties[fieldName])
             }
             // console.log(properties)
-            schemaMap[collectionName] = {
+            schemaMap[collectionName] ||= {
                 bsonType: 'object',
                 properties
             };
@@ -150,32 +149,10 @@ async function generateCsfleSchema(kmsProviders: KMSProviders) {
         //     bsonType: 'object',
         //     properties
         // };
-        console.log(collectionName)
+        console.log(collectionNam)
     }
 
     // await client.close();
     return schemaMap;
 }
 
-function _(connectionString: string, kmsProviders: KMSProviders,) {
-    console.log(connectionString)
-    var mongoClient = new MongoClient(connectionString, {
-        monitorCommands: true,
-        autoEncryption: {
-            keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
-            kmsProviders,
-            // Attach schemaMap to auto-encryption configuration
-        },
-    });
-    console.log("generationStarted")
-    generateCsfleSchema(kmsProviders).then(console.log);
-}
-const kmsProviders: KMSProviders = {
-    azure: {
-        tenantId: AZURE_TENANT_ID,
-        clientId: AZURE_CLIENT_ID,
-        clientSecret: AZURE_CLIENT_SECRET,
-        identityPlatformEndpoint: 'login.microsoftonline.com', // Standard Azure login endpoint
-    },
-}
-_(MONGO_URI, kmsProviders);

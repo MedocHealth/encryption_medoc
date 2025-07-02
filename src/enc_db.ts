@@ -1,8 +1,19 @@
 import { MongoClient, ClientEncryption, KMSProviders } from 'mongodb';
 import { Application } from 'express';
 import { f } from './devtrials';
+import * as fs from 'fs';
+import * as p from 'path';
+import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from './constants/constants';
+import { generateCsfleSchema } from './dekmanager';
+
+
 import * as dotenv from 'dotenv';
+import * as ass from 'assert';
+
+
 dotenv.config();//configDotenv();
+
+
 export let client: MongoClient;
 export class EncryptedMongoClient {
     public static a0: Application;
@@ -10,7 +21,7 @@ export class EncryptedMongoClient {
     static keyVaultNamespace: string;
 
     constructor(app: Application) {
-
+        ass.ok(app, "Insufficient paramenter to the constructor");
         EncryptedMongoClient.a0 = app;
         this.mongoClient = null;
         EncryptedMongoClient.keyVaultNamespace = KEY_VAULT_NAMESPACE; // hardcoded for your control
@@ -18,9 +29,12 @@ export class EncryptedMongoClient {
         // console.log("schema Map", JSON.stringify(generateCSFLESchemaMapForDBs()))
     }
 
-    async init(url: string) {
+    async init(url: string): Promise<MongoClient> {
         if (!EncryptedMongoClient.a0) {
             throw new Error('MongoClient is not initialized: HTTP server not provided');
+        }
+        if (!url || url.trim() === '') {
+            throw new Error('DB Coonection string must not be null, undefined, or empty');
         }
 
         // Default connection string if none is provided
@@ -62,7 +76,9 @@ export class EncryptedMongoClient {
 
 
         // Define schemaMap for field-level encryption
-        const schemaMap = {
+        const schemaMap = await generateCsfleSchema(kmsProviders);
+
+        let t = {
             'myColl': {
                 bsonType: 'object',
                 encryptMetadata: {
@@ -91,7 +107,6 @@ export class EncryptedMongoClient {
 
         // Assign to the global client variable
         EncryptedMongoClient.a0.locals.mongoClient = this.mongoClient;
-        await this.mongoClient.connect();
         console.log('MongoDB client initialized with CSFLE and Azure Key Vault integration');
 
         // Optional: Return the client instance for use in other parts of your application
@@ -106,11 +121,6 @@ export class EncryptedMongoClient {
 }
 
 
-
-import * as fs from 'fs';
-import { v4 as uuidv4 } from 'uuid'; // for generating key UUIDs (mock)
-import * as p from 'path';
-import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from './constants/constants';
 
 
 type CollectionSchema = Record<string, string>;
@@ -129,7 +139,7 @@ export async function generateCSFLESchemaMapForDBs(client?: ClientEncryption): P
     const schemaMap: Record<string, any> = {};
 
     for (const [collectionName, fields] of Object.entries(sharedSchema)) {
-       // console.log(collectionName);
+        // console.log(collectionName);
         const properties: Record<string, any> = {};
         const dataKey = await client?.createDataKey('azure', {
             masterKey: {

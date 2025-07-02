@@ -1,4 +1,4 @@
-export enum Collections {
+export enum MedocCollections {
     ALERTS = "Alerts",
     CHATS = "Chats",
     DEFAULTFORMS = "defaultForms",
