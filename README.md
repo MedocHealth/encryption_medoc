@@ -7,7 +7,8 @@ To use it add it to package.json as
 ```json
 {
     "dependencies":{
-        "encryption_medoc":"git+https://github.com/MedocHealth/encryption_medoc.git#v1.0.0"
+            "encryption_medoc": "github:MedocHealth/encryption_medoc#v1.0.0",
+
     }
 }
 ```
@@ -17,6 +18,8 @@ then run the following command
 ```bash
 npm install
 ```
+
+If for some reason NPM install fails then follow the instructions on prepare.js and execute those commands by yourself on the deploying machine. And in Developement mode create a fallback to your normal client using the `isUbuntu` function here.
 
 then in the root of your JS/TS application create instances of the following:
 

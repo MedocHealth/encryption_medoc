@@ -4,7 +4,20 @@ const { execSync } = require("child_process");
 const os = require("os");
 const fs = require("fs");
 
-const platform = os.platform();
+let platform = os.platform()
+function isUbuntu() {
+  if (os.platform() !== "linux") return false;
+
+  try {
+    const osRelease = fs.readFileSync("/etc/ls-release", "utf-8");
+    return osRelease.toLowerCase().includes("ubuntu");
+  } catch (e) {
+    return false;
+  }
+}
+if (isUbuntu()) {
+  platform = "ubuntu"
+}
 console.log(`🔍 Detected platform: ${platform}`);
 
 function run(command) {
@@ -45,7 +58,7 @@ function getUbuntuCodename() {
   }
 }
 
-function installLinux() {
+function installUbuntu() {
   console.log("📦 Installing mongocryptd on Linux (Ubuntu/Debian)");
 
   const codename = getUbuntuCodename();
@@ -96,8 +109,8 @@ function verifyInstallation() {
 // Main logic
 (async () => {
   switch (platform) {
-    case "linux":
-      installLinux();
+    case "ubuntu":
+      installUbuntu();
       break;
     case "darwin":
       installMac();
