@@ -7,13 +7,14 @@
   "files": [
     "dist",
     "conf",
+    "build",
     "bin",
     "package.json",
     "tsconfig.json"
   ],
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build && npm run obfuscate",
+    "prepare": "npm run build ",
     "obfuscate": "javascript-obfuscator dist --output dist",
     "start": "node dist-obfuscated/index.js"
   },
