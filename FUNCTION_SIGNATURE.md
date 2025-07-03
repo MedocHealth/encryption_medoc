@@ -42,7 +42,7 @@ constructor(app:Application)
 **/
 
 
-init(db_url): MongoClient;
+init(db_url): Promise<MongoClient>;
 
 }
 ```

@@ -3,4 +3,4 @@ export * from './constants/constants';
 //export * from './kms';
 export * from './encryption';
 export * from './collections';
-export * from './utils'
+export * from './utils/utils'

@@ -1,6 +1,6 @@
 import { MongoClient, ClientEncryption, KMSProviders, MongoClientOptions } from 'mongodb';
 import { Application } from 'express';
-import { f } from './devtrials';
+import { f } from './utils/devtrials';
 import * as fs from 'fs';
 import * as p from 'path';
 import { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_KEY_NAME, AZURE_KEY_VAULT_ENDPOINT, AZURE_TENANT_ID, KEY_VAULT_NAMESPACE, KEYVALUT_COLLECTION, KEYVALUT_DB } from './constants/constants';

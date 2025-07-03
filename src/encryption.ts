@@ -16,25 +16,35 @@ export class EncryptionService {
   private mongoClient: MongoClient;
 
   constructor(client: MongoClient) {
+    
     this.credential = new DefaultAzureCredential();
+    
     this.secretClient = new SecretClient(EncryptionService.KEY_VAULT_URL, this.credential);
+    
     this.mongoClient = client;
   }
 
   async init() {
+    
     await this.mongoClient.connect();
+    
     console.log('MongoDB connected');
+  
   }
 
   // Call once in app shutdown
   async close() {
+    
     await this.mongoClient.close();
+    
     console.log('MongoDB disconnected');
   }
 
   // Create and store a symmetric key in Azure Key Vault, and store its reference in MongoDB
   public async createKeyForUser(username: string): Promise<string> {
+    
     const keyId = `aes-key-${username}`;
+    
     const keyBytes = crypto.randomBytes(32); // 256-bit key
     const base64Key = keyBytes.toString("base64");
 
@@ -46,7 +56,9 @@ export class EncryptionService {
 
   // Encrypt text using a user-specific AES-256-CBC key and random IV
   public async encrypt(username: string, data: string): Promise<string> {
+    
     const keyId = await this.getKeyIdByUsername(username);
+    
     if (!keyId) throw new Error(`Key not found for user: ${username}`);
 
     const key = await this.fetchSymmetricKeyFromKMS(keyId);
@@ -61,7 +73,9 @@ export class EncryptionService {
 
   // Decrypt ciphertext using user-specific AES key and IV
   public async decrypt(username: string, encryptedData: string, ivBase64: string): Promise<string> {
+
     const keyId = await this.getKeyIdByUsername(username);
+    
     if (!keyId) throw new Error(`Key not found for user: ${username}`);
 
     const key = await this.fetchSymmetricKeyFromKMS(keyId);
@@ -76,7 +90,10 @@ export class EncryptionService {
   }
 
   public async getKeyFromCollection(username: string): Promise<String> {
+    
     const keyId = await this.getKeyIdByUsername(username);
+    
+    
     if (!keyId) throw new Error(`Key not found for user: ${username}`);
 
     const key = await this.fetchSymmetricKeyFromKMS(keyId);
@@ -86,14 +103,19 @@ export class EncryptionService {
   }
   // Internal: Fetch a key from Azure Key Vault
   private async fetchSymmetricKeyFromKMS(keyId: string): Promise<Buffer> {
+    
     const secret = await this.secretClient.getSecret(keyId);
+    
     return Buffer.from(secret.value!, "base64");
   }
 
   // Internal: Store user-keyId mapping in MongoDB
   private async storeKeyReference(username: string, keyId: string): Promise<void> {
+    
     await this.init();
+    
     const db = this.mongoClient.db(EncryptionService.DB_NAME);
+    
     const collection = db.collection(EncryptionService.COLLECTION_NAME);
 
     await collection.updateOne(
@@ -101,18 +123,25 @@ export class EncryptionService {
       { $set: { keyId } },
       { upsert: true }
     );
+    
     await this.close();
 
   }
 
   // Internal: Get keyId for a username
   private async getKeyIdByUsername(username: string): Promise<string | null> {
+    
     await this.init();
+    
     const db = this.mongoClient.db(EncryptionService.DB_NAME);
+    
     const collection = db.collection(EncryptionService.COLLECTION_NAME);
 
+    
     const result = await collection.findOne({ username });
-    await this.close()
+    
+    await this.close();
+    
     return result?.keyId || null;
   }
 
