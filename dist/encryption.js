@@ -33,14 +33,14 @@ class EncryptionService {
         await this.storeKeyReference(username, keyId);
         return `${keyId}:${base64Key}`;
     }
-    // Encrypt text using a user-specific AES-256-CBC key and random IV
+    // Encrypt text using a user-specific AES-256-GCM key and random IV
     async encrypt(username, data) {
         const keyId = await this.getKeyIdByUsername(username);
         if (!keyId)
             throw new Error(`Key not found for user: ${username}`);
         const key = await this.fetchSymmetricKeyFromKMS(keyId);
         const iv = crypto_1.default.randomBytes(16); // 16-byte IV
-        const cipher = crypto_1.default.createCipheriv("aes-256-cbc", key, iv);
+        const cipher = crypto_1.default.createCipheriv('aes-256-gcm', key, iv);
         let encrypted = cipher.update(data, "utf8", "base64");
         encrypted += cipher.final("base64");
         return `${iv.toString('base64')}:${encrypted}`;
@@ -52,7 +52,7 @@ class EncryptionService {
             throw new Error(`Key not found for user: ${username}`);
         const key = await this.fetchSymmetricKeyFromKMS(keyId);
         const iv = Buffer.from(ivBase64, "base64");
-        const decipher = crypto_1.default.createDecipheriv("aes-256-cbc", key, iv);
+        const decipher = crypto_1.default.createDecipheriv("aes-256-gcm", key, iv);
         let decrypted = decipher.update(encryptedData, "base64", "utf8");
         decrypted += decipher.final("utf8");
         return decrypted;

@@ -1,4 +1,4 @@
-import { MongoClient, ClientEncryption } from 'mongodb';
+import { MongoClient, ClientEncryption, MongoClientOptions } from 'mongodb';
 import { Application } from 'express';
 export declare let client: MongoClient;
 export declare class EncryptedMongoClient {
@@ -6,7 +6,7 @@ export declare class EncryptedMongoClient {
     mongoClient: MongoClient | null;
     static keyVaultNamespace: string;
     constructor(app: Application);
-    init(url: string): Promise<MongoClient>;
+    init(url: string, options?: MongoClientOptions): Promise<MongoClient>;
     getClient(): MongoClient | null;
 }
 /**

@@ -19,3 +19,4 @@ __exportStar(require("./constants/constants"), exports);
 //export * from './kms';
 __exportStar(require("./encryption"), exports);
 __exportStar(require("./collections"), exports);
+__exportStar(require("./utils/utils"), exports);

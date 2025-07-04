@@ -54,7 +54,7 @@ export class EncryptionService {
     return `${keyId}:${base64Key}`;
   }
 
-  // Encrypt text using a user-specific AES-256-CBC key and random IV
+  // Encrypt text using a user-specific AES-256-GCM key and random IV
   public async encrypt(username: string, data: string): Promise<string> {
     
     const keyId = await this.getKeyIdByUsername(username);
@@ -63,7 +63,7 @@ export class EncryptionService {
 
     const key = await this.fetchSymmetricKeyFromKMS(keyId);
     const iv = crypto.randomBytes(16); // 16-byte IV
-    const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
 
     let encrypted = cipher.update(data, "utf8", "base64");
     encrypted += cipher.final("base64");
@@ -81,7 +81,7 @@ export class EncryptionService {
     const key = await this.fetchSymmetricKeyFromKMS(keyId);
     const iv = Buffer.from(ivBase64, "base64");
 
-    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+    const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
     let decrypted = decipher.update(encryptedData, "base64", "utf8");
     decrypted += decipher.final("utf8");
 

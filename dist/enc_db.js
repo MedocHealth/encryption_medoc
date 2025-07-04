@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EncryptedMongoClient = exports.client = void 0;
 exports.generateCSFLESchemaMapForDBs = generateCSFLESchemaMapForDBs;
 const mongodb_1 = require("mongodb");
-const devtrials_1 = require("./devtrials");
+const devtrials_1 = require("./utils/devtrials");
 const fs = __importStar(require("fs"));
 const p = __importStar(require("path"));
 const constants_1 = require("./constants/constants");
@@ -53,7 +53,7 @@ class EncryptedMongoClient {
         (0, devtrials_1.f)(app);
         // console.log("schema Map", JSON.stringify(generateCSFLESchemaMapForDBs()))
     }
-    async init(url) {
+    async init(url, options) {
         if (!EncryptedMongoClient.a0) {
             throw new Error('MongoClient is not initialized: HTTP server not provided');
         }
@@ -80,7 +80,7 @@ class EncryptedMongoClient {
             },
         };
         // Initialize a client for Key Vault to manage encryption keys
-        const keyVaultClient = new mongodb_1.MongoClient(connectionString);
+        const keyVaultClient = new mongodb_1.MongoClient(connectionString, options);
         await keyVaultClient.connect();
         const keyVault = keyVaultClient.db(constants_1.KEYVALUT_DB).collection(constants_1.KEYVALUT_COLLECTION);
         keyVault.createIndex({ keyAltNames: 1 }, {
@@ -117,8 +117,9 @@ class EncryptedMongoClient {
                 schemaMap, // Attach schemaMap to auto-encryption configuration
             },
         });
+        this.mongoClient.connect();
         // Assign to the global client variable
-        EncryptedMongoClient.a0.locals.mongoClient = this.mongoClient;
+        exports.client = this.mongoClient;
         console.log('MongoDB client initialized with CSFLE and Azure Key Vault integration');
         // Optional: Return the client instance for use in other parts of your application
         return this.mongoClient;
