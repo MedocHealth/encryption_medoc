@@ -1,5 +1,7 @@
 # 🗝️ encryption.ts Documentation
 
+📑🔙[Back to Index](./index.md)
+
 ## 📝 Overview
 
 This module provides the `EncryptionService` class, which manages per-user symmetric key generation, storage, encryption, and decryption using Azure Key Vault and MongoDB. It is designed to securely handle user-specific encryption keys and data, integrating with Azure and MongoDB for robust key management and data protection.
@@ -68,6 +70,6 @@ console.log(decrypted); // 'Sensitive data'
 ## 👤 Author
 
 - Name: Vinayak Gupta
-- Email: vinayakg236@gmail.com 
-- GitHub: https://github.com/vinayakgupta29
-- Site: https://vinayakgupta29.github.io/   ||   https://vinayakgupta29.github.io/portfolio
+- Email: <vinayakg236@gmail.com>
+- GitHub: <https://github.com/vinayakgupta29>
+- Site: <https://vinayakgupta29.github.io/>   ||   <https://vinayakgupta29.github.io/portfolio>

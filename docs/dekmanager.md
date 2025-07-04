@@ -1,5 +1,7 @@
 # 🔑 dekmanager.ts Documentation
 
+📑🔙[Back to Index](./index.md)
+
 ## 📝 Overview
 
 This module provides utilities for managing Data Encryption Keys (DEKs) and generating Client-Side Field Level Encryption (CSFLE) schema maps for MongoDB collections, using Azure Key Vault as the KMS provider. It automates DEK creation, schema generation, and key vault index management to support secure field-level encryption in the Medoc application.
@@ -61,6 +63,6 @@ const schemaMap = await generateCsfleSchema(kmsProviders);
 ## 👤 Author
 
 - Name: Vinayak Gupta
-- Email: vinayakg236@gmail.com 
-- GitHub: https://github.com/vinayakgupta29
-- Site: https://vinayakgupta29.github.io/   ||   https://vinayakgupta29.github.io/portfolio
+- Email: <vinayakg236@gmail.com>
+- GitHub: <https://github.com/vinayakgupta29>
+- Site: <https://vinayakgupta29.github.io/>   ||   <https://vinayakgupta29.github.io/portfolio>

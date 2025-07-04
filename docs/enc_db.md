@@ -1,5 +1,7 @@
 # 🔐 enc_db.ts Documentation
 
+📑🔙[Back to Index](./index.md)
+
 ## 📝 Overview
 
 This module provides an abstraction for connecting to a MongoDB database with Client-Side Field Level Encryption (CSFLE) using Azure Key Vault as the Key Management Service (KMS). It is designed for secure storage and retrieval of sensitive data, integrating with Express applications.
@@ -63,6 +65,6 @@ encClient.init(process.env.MONGO_URL)
 ## 👤 Author
 
 - Name: Vinayak Gupta
-- Email: vinayakg236@gmail.com 
-- GitHub: https://github.com/vinayakgupta29
-- Site: https://vinayakgupta29.github.io/   ||   https://vinayakgupta29.github.io/portfolio
+- Email: <vinayakg236@gmail.com>
+- GitHub: <https://github.com/vinayakgupta29>
+- Site: <https://vinayakgupta29.github.io/>   ||   <https://vinayakgupta29.github.io/portfolio>

@@ -1,5 +1,7 @@
 # 🚧 devtrials.ts Documentation
 
+📑🔙[Back to Index](./index.md)
+
 ## 📝 Overview
 
 **⚠️ This module is strictly for development and debugging purposes. It should never be included in production builds and is intentionally not exported.**
@@ -15,6 +17,7 @@ The `devtrials.ts` module provides a set of developer utilities and Express rout
 ## 🏗️ Main Components
 
 ### 🛣️ Express Route Registration
+
 - The `f(app: Application)` function registers several development-only routes on the provided Express app:
   - `/dev/try/eta`: Estimates time to snapshot the database.
   - `/dev/s`: Returns total database size (excluding system DBs).
@@ -24,10 +27,12 @@ The `devtrials.ts` module provides a set of developer utilities and Express rout
   - `/dev/try/test`: Allows execution of arbitrary shell commands (extremely dangerous, for dev use only).
 
 ### 🗃️ Snapshot and Dump Utilities
+
 - Functions to snapshot the database, write collections to files, and zip the results for download.
 - Helpers for calculating database size, document counts, and estimated snapshot times.
 
 ### 🔑 Key Management and Decryption Helpers
+
 - Functions for inspecting and decrypting Data Encryption Keys (DEKs) for development and testing.
 
 ## 🚀 Usage Example
@@ -48,7 +53,6 @@ f(app);
 ## 👤 Author
 
 - Name: Vinayak Gupta
-- Email: vinayakg236@gmail.com 
-- GitHub: https://github.com/vinayakgupta29
-- Site: https://vinayakgupta29.github.io/   ||   https://vinayakgupta29.github.io/portfolio
-
+- Email: <vinayakg236@gmail.com>
+- GitHub: <https://github.com/vinayakgupta29>
+- Site: <https://vinayakgupta29.github.io/>   ||   <https://vinayakgupta29.github.io/portfolio>

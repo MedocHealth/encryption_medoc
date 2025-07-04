@@ -32,6 +32,6 @@ For more details on each module, click the links above. This documentation is in
 ## 👤 Author
 
 - Name: Vinayak Gupta
-- Email: vinayakg236@gmail.com 
-- GitHub: https://github.com/vinayakgupta29
-- Site: https://vinayakgupta29.github.io/   ||   https://vinayakgupta29.github.io/portfolio
+- Email: <vinayakg236@gmail.com>
+- GitHub: <https://github.com/vinayakgupta29>
+- Site: <https://vinayakgupta29.github.io/>   ||   <https://vinayakgupta29.github.io/portfolio>
