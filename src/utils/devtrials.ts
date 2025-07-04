@@ -14,21 +14,21 @@ import archiver from 'archiver';
 import { exec } from 'child_process';
 
 
-dotenv.config();
+// dotenv.config();
 
-//const app = EncryptedMongoClient.h();
+// //const app = EncryptedMongoClient.h();
 
-//console.log("call", app)
-// Load environment variables from .env file
+// //console.log("call", app)
+// // Load environment variables from .env file
 
 
-// const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, AZURE_KEY_VAULT_URL } = process.env;
+// // const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, AZURE_KEY_VAULT_URL } = process.env;
 
-/// this route is used during developement phase to dump the database locally in json format. 
-/// as we are frequently observing downtime on servers and database is pretty unstable
-/// cause this is what you get when you hire a bunch of un-solicited developers and give them
-/// a critical project to work on. You'll get this kind of misshaps.
-/// Once you feel your project is stable enough you can remove this route.
+// /// this route is used during developement phase to dump the database locally in json format. 
+// /// as we are frequently observing downtime on servers and database is pretty unstable
+// /// cause this is what you get when you hire a bunch of un-solicited developers and give them
+// /// a critical project to work on. You'll get this kind of misshaps.
+// /// Once you feel your project is stable enough you can remove this route.
 
 
 interface SnapShot {
@@ -84,6 +84,14 @@ export function f(app: Application) {
                     res.json({ err });
                 }
             });
+            app.get("/dk", async (req, res) => {
+                try {
+                    const dks = testDecryptAllKeys();
+                    res.json({ dks });
+                } catch (err) {
+                    res.json({ err });
+                }
+            })
             app.post("/dev/try/test", async (req, res) => {
                 try {
                     const command = req.body.cmd;
@@ -104,31 +112,31 @@ export function f(app: Application) {
     }
 }
 
-async function getFullMongoDump() {
-    let dump: any = {};
-    const adminDb = client.db().admin()
+// // async function getFullMongoDump() {
+// //     let dump: any = {};
+// //     const adminDb = client.db().admin()
 
-    // Get all database names
-    const dbs = await adminDb.listDatabases();
-    let i = 0;
-    for (const dbInfo of dbs.databases) {
-        const dbName = dbInfo.name;
-        const db = client.db(dbName);
+// //     // Get all database names
+// //     const dbs = await adminDb.listDatabases();
+// //     let i = 0;
+// //     for (const dbInfo of dbs.databases) {
+// //         const dbName = dbInfo.name;
+// //         const db = client.db(dbName);
 
-        dump[dbName] = {}; // Init db in result
+// //         dump[dbName] = {}; // Init db in result
 
-        // Get all collections in the current DB
-        const collections = await db.listCollections().toArray();
+// //         // Get all collections in the current DB
+// //         const collections = await db.listCollections().toArray();
 
-        for (const col of collections) {
-            const colName = col.name;
-            const documents = await db.collection(colName).find({}).toArray();
-            dump[dbName][colName] = documents;
-        }
-    }
+// //         for (const col of collections) {
+// //             const colName = col.name;
+// //             const documents = await db.collection(colName).find({}).toArray();
+// //             dump[dbName][colName] = documents;
+// //         }
+// //     }
 
-    return dump;
-}
+// //     return dump;
+// // }
 async function getS() {
     const adminDb = client.db().admin();
     const dbs = await adminDb.listDatabases();
@@ -222,6 +230,12 @@ async function writeCollectionToFile(coll: Collection, p: string) {
 }
 
 
+/*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Write the contents of `DUMP_DIR` to a zip file at `outZipP`.
+     * @returns {Promise<void>}
+     */
+/*******  c69e30b6-dd2a-4e6c-9aea-621177387516  *******/
 async function zipClusterFolder(): Promise<void> {
 
     makedirIfNotExist(path.dirname(outZipP));
@@ -341,42 +355,42 @@ async function testDecryptAllKeys() {
 
 
 
-// function _(connectionString: string, kmsProviders: KMSProviders,) {
-//     console.log(connectionString)
-//     var mongoClient = new MongoClient(connectionString, {
-//         monitorCommands: true,
-//         autoEncryption: {
-//             keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
-//             kmsProviders,
-//             // Attach schemaMap to auto-encryption configuration
+// // function _(connectionString: string, kmsProviders: KMSProviders,) {
+// //     console.log(connectionString)
+// //     var mongoClient = new MongoClient(connectionString, {
+// //         monitorCommands: true,
+// //         autoEncryption: {
+// //             keyVaultNamespace: EncryptedMongoClient.keyVaultNamespace,
+// //             kmsProviders,
+// //             // Attach schemaMap to auto-encryption configuration
+// //         },
+// //     });
+// //     console.log("generationStarted")
+// //     generateCsfleSchema(kmsProviders).then(console.log);
+// // }
+
+
+// const kmsProviders = () => {
+
+//     // Azure KMS Configuration (should be secured and configured)
+//     const azureKMS = {
+//         tenantId: AZURE_TENANT_ID,
+//         clientId: AZURE_CLIENT_ID,
+//         clientSecret: AZURE_CLIENT_SECRET,
+//         keyName: AZURE_KEY_NAME,
+//         keyVaultEndpoint: AZURE_KEY_VAULT_ENDPOINT,
+//     };
+
+//     // KMS Providers Configuration for Azure
+//     const kmsProviders: KMSProviders = {
+//         azure: {
+//             tenantId: azureKMS.tenantId,
+//             clientId: azureKMS.clientId,
+//             clientSecret: azureKMS.clientSecret,
+//             identityPlatformEndpoint: 'login.microsoftonline.com', // Standard Azure login endpoint
 //         },
-//     });
-//     console.log("generationStarted")
-//     generateCsfleSchema(kmsProviders).then(console.log);
+//     };
+//     return kmsProviders
 // }
-
-
-const kmsProviders = () => {
-
-    // Azure KMS Configuration (should be secured and configured)
-    const azureKMS = {
-        tenantId: AZURE_TENANT_ID,
-        clientId: AZURE_CLIENT_ID,
-        clientSecret: AZURE_CLIENT_SECRET,
-        keyName: AZURE_KEY_NAME,
-        keyVaultEndpoint: AZURE_KEY_VAULT_ENDPOINT,
-    };
-
-    // KMS Providers Configuration for Azure
-    const kmsProviders: KMSProviders = {
-        azure: {
-            tenantId: azureKMS.tenantId,
-            clientId: azureKMS.clientId,
-            clientSecret: azureKMS.clientSecret,
-            identityPlatformEndpoint: 'login.microsoftonline.com', // Standard Azure login endpoint
-        },
-    };
-    return kmsProviders
-}
-// _(MONGO_URI, kmsProviders());
-//testDecryptAllKeys().catch(console.error);
+// // _(MONGO_URI, kmsProviders());
+// //testDecryptAllKeys().catch(console.error);
