@@ -1,4 +1,4 @@
-# 🛡️ encryption_medoc v1.0.0
+# 🛡️ encryption_medoc v1.1.0
 
 🔒 **Encryption Package in JS**
 
